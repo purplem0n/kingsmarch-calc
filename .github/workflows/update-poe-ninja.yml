@@ -1,9 +1,6 @@
 name: Update poe.ninja data
 
 on:
-  schedule:
-    # Every hour at minute 0 (UTC)
-    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
