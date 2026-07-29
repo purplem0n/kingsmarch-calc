@@ -1,0 +1,51 @@
+name: Update poe.ninja data
+
+on:
+  schedule:
+    # Every hour at minute 0 (UTC)
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-poe-ninja
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch runegraft data
+        run: |
+          curl -fsSL \
+            'https://poe.ninja/poe1/api/economy/exchange/current/overview?league=Allflame&type=Runegraft' \
+            -H 'accept: */*' \
+            -H 'referer: https://poe.ninja/poe1/economy/allflame/runegrafts' \
+            -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36' \
+            -o poe.ninja.runegraft.json
+
+      - name: Fetch tattoo data
+        run: |
+          curl -fsSL \
+            'https://poe.ninja/poe1/api/economy/exchange/current/overview?league=Allflame&type=Tattoo' \
+            -H 'accept: */*' \
+            -H 'referer: https://poe.ninja/poe1/economy/allflame/tattoos' \
+            -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36' \
+            -o poe.ninja.tattoo.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add poe.ninja.runegraft.json poe.ninja.tattoo.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update poe.ninja data"
+            git push
+          fi

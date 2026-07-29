@@ -1,0 +1,132 @@
+{
+  "tattoo": {
+    "shipmentValue": 100000,
+    "ports": [
+      {
+        "id": "ngakanu",
+        "name": "Ngakanu",
+        "attribute": "Strength"
+      },
+      {
+        "id": "te-onui",
+        "name": "Te Onui",
+        "attribute": "Dexterity"
+      },
+      {
+        "id": "mota-aro",
+        "name": "Mota Aro",
+        "attribute": "Intelligence"
+      }
+    ],
+    "items": {
+      "tattoo-of-the-arohongui-moonwarden": "te-onui",
+      "tattoo-of-the-arohongui-scout": "te-onui",
+      "tattoo-of-the-arohongui-warrior": "te-onui",
+      "tattoo-of-the-arohongui-shaman": "mota-aro",
+      "tattoo-of-the-arohongui-warmonger": "mota-aro",
+      "tattoo-of-the-hinekora-deathwarden": "mota-aro",
+      "tattoo-of-the-hinekora-shaman": "mota-aro",
+      "tattoo-of-the-hinekora-storyteller": "mota-aro",
+      "tattoo-of-the-hinekora-warmonger": "mota-aro",
+      "tattoo-of-the-hinekora-warrior": "mota-aro",
+      "tattoo-of-the-kitava-blood-drinker": "ngakanu",
+      "tattoo-of-the-kitava-rebel": "ngakanu",
+      "tattoo-of-the-kitava-warrior": "ngakanu",
+      "tattoo-of-the-kitava-shaman": "ngakanu",
+      "tattoo-of-the-kitava-heart-eater": "mota-aro",
+      "tattoo-of-the-ngamahu-firewalker": "ngakanu",
+      "tattoo-of-the-ngamahu-shaman": "ngakanu",
+      "tattoo-of-the-ngamahu-warmonger": "ngakanu",
+      "tattoo-of-the-ngamahu-warrior": "ngakanu",
+      "tattoo-of-the-ngamahu-woodcarver": "ngakanu",
+      "tattoo-of-the-ramako-archer": "te-onui",
+      "tattoo-of-the-ramako-fleetfoot": "te-onui",
+      "tattoo-of-the-ramako-scout": "te-onui",
+      "tattoo-of-the-ramako-shaman": "te-onui",
+      "tattoo-of-the-ramako-sniper": "te-onui",
+      "tattoo-of-the-rongokurai-brute": "ngakanu",
+      "tattoo-of-the-rongokurai-goliath": "ngakanu",
+      "tattoo-of-the-rongokurai-guard": "ngakanu",
+      "tattoo-of-the-rongokurai-warrior": "ngakanu",
+      "tattoo-of-the-rongokurai-turtle": "mota-aro",
+      "tattoo-of-the-tasalio-bladedancer": "ngakanu",
+      "tattoo-of-the-tasalio-scout": "te-onui",
+      "tattoo-of-the-tasalio-tideshifter": "te-onui",
+      "tattoo-of-the-tasalio-warrior": "te-onui",
+      "tattoo-of-the-tasalio-shaman": "mota-aro",
+      "tattoo-of-the-tawhoa-herbalist": "te-onui",
+      "tattoo-of-the-tawhoa-naturalist": "te-onui",
+      "tattoo-of-the-tawhoa-scout": "te-onui",
+      "tattoo-of-the-tawhoa-shaman": "mota-aro",
+      "tattoo-of-the-tawhoa-warrior": "mota-aro",
+      "tattoo-of-the-tukohama-shaman": "ngakanu",
+      "tattoo-of-the-tukohama-brawler": "ngakanu",
+      "tattoo-of-the-tukohama-warcaller": "ngakanu",
+      "tattoo-of-the-tukohama-warmonger": "ngakanu",
+      "tattoo-of-the-tukohama-warrior": "ngakanu",
+      "tattoo-of-the-valako-shieldbearer": "ngakanu",
+      "tattoo-of-the-valako-scout": "mota-aro",
+      "tattoo-of-the-valako-shaman": "mota-aro",
+      "tattoo-of-the-valako-stormrider": "mota-aro",
+      "tattoo-of-the-valako-warrior": "mota-aro",
+      "journey-tattoo-of-the-body": "ngakanu",
+      "journey-tattoo-of-the-mind": "te-onui",
+      "journey-tattoo-of-the-soul": "mota-aro"
+    }
+  },
+  "runegraft": {
+    "shipmentValue": 400000,
+    "ports": [
+      {
+        "id": "riben-fell",
+        "name": "Riben Fell",
+        "attribute": "Dexterity"
+      },
+      {
+        "id": "pondium",
+        "name": "Pondium",
+        "attribute": "Intelligence"
+      },
+      {
+        "id": "kalguur",
+        "name": "Kalguur",
+        "attribute": "Strength"
+      }
+    ],
+    "items": {
+      "runegraft-of-the-sinistral": "riben-fell",
+      "runegraft-of-the-bound": "riben-fell",
+      "runegraft-of-refraction": "riben-fell",
+      "runegraft-of-the-imbued": "riben-fell",
+      "runegraft-of-the-agile": "riben-fell",
+      "runegraft-of-suffering": "riben-fell",
+      "runegraft-of-quaffing": "riben-fell",
+      "runegraft-of-rotblood": "riben-fell",
+      "runegraft-of-connection": "pondium",
+      "runegraft-of-resurgence": "pondium",
+      "runegraft-of-the-spellbound": "pondium",
+      "runegraft-of-the-novamark": "pondium",
+      "runegraft-of-the-witchmark": "pondium",
+      "runegraft-of-loyalty": "pondium",
+      "runegraft-of-treachery": "pondium",
+      "runegraft-of-time": "pondium",
+      "runegraft-of-blasphemy": "pondium",
+      "runegraft-of-the-warp": "pondium",
+      "runegraft-of-the-river": "kalguur",
+      "runegraft-of-the-combatant": "kalguur",
+      "runegraft-of-the-soulwick": "kalguur",
+      "runegraft-of-restitching": "kalguur",
+      "runegraft-of-bellows": "kalguur",
+      "runegraft-of-the-jeweller": "kalguur",
+      "runegraft-of-stability": "kalguur",
+      "runegraft-of-consecration": "kalguur",
+      "runegraft-of-fury": "kalguur",
+      "runegraft-of-rallying": "kalguur"
+    },
+    "anyItems": [
+      "runegraft-of-the-fortress",
+      "runegraft-of-gemcraft",
+      "runegraft-of-the-angler"
+    ]
+  }
+}

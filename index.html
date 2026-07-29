@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoE1 Tattoo & Runegraft Economy — Allflame</title>
+  <style>
+    :root {
+      --bg: #0c0c10;
+      --surface: #14141c;
+      --surface-2: #1c1c28;
+      --border: #2a2a3a;
+      --text: #e8e4dc;
+      --muted: #8a8698;
+      --gold: #c8aa6e;
+      --gold-dim: #9a7b4f;
+      --chaos: #d4c4a8;
+      --divine: #e8c547;
+      --positive: #5fd068;
+      --negative: #e05555;
+      --accent: #7eb8da;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(180deg, #181824 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.25rem 1rem;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .rate-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+    }
+
+    .rate-chip img { width: 20px; height: 20px; }
+
+    .port-worth-panel {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem 0;
+    }
+
+    .port-worth-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .port-worth-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .port-worth-subtitle {
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    .port-worth-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .port-worth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+    }
+
+    .port-worth-card .port-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .port-worth-card .port-attr {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .port-worth-card .port-value {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--chaos);
+    }
+
+    .port-worth-card .port-value img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .port-worth-card .port-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.25rem;
+    }
+
+    .tab {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab:hover { color: var(--text); }
+
+    .tab.active {
+      background: var(--surface-2);
+      color: var(--gold);
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 0.875rem;
+      padding: 0.55rem 0.75rem;
+      outline: none;
+    }
+
+    .search-wrap input:focus { border-color: var(--gold-dim); }
+
+    .search-wrap input::placeholder { color: var(--muted); }
+
+    .count-label {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--surface-2);
+    }
+
+    th {
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    th:hover { color: var(--text); }
+
+    th.sorted { color: var(--gold); }
+
+    th .sort-arrow {
+      margin-left: 0.25rem;
+      opacity: 0.5;
+    }
+
+    th.sorted .sort-arrow { opacity: 1; }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(200, 170, 110, 0.04); }
+
+    .item-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 220px;
+    }
+
+    .item-cell img {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      image-rendering: pixelated;
+    }
+
+    .item-name {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .item-name:hover { color: var(--gold); text-decoration: underline; }
+
+    .num { font-variant-numeric: tabular-nums; text-align: right; }
+
+    td.num { text-align: right; }
+
+    .currency-val {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.3rem;
+    }
+
+    .currency-val img { width: 16px; height: 16px; }
+
+    .change {
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .change.positive { color: var(--positive); }
+    .change.negative { color: var(--negative); }
+    .change.neutral { color: var(--muted); }
+
+    .sparkline {
+      display: block;
+      width: 72px;
+      height: 24px;
+    }
+
+    .loading, .error {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+
+    .error { color: var(--negative); }
+
+    footer {
+      max-width: 1200px;
+      margin: 1.5rem auto 2rem;
+      padding: 0 1.25rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent); }
+
+    @media (max-width: 640px) {
+      th:nth-child(5), td:nth-child(5) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PoE1 Tattoo & Runegraft Economy</h1>
+    <p>Allflame league — data from <a href="https://poe.ninja/poe1/economy/allflame" style="color: var(--accent)">poe.ninja</a></p>
+    <div class="meta-bar" id="meta-bar"></div>
+  </header>
+
+  <section class="port-worth-panel" id="port-worth-panel" hidden>
+    <div class="port-worth-header">
+      <span class="port-worth-title">Chaos per 1M shipment value</span>
+      <span class="port-worth-subtitle" id="port-worth-subtitle"></span>
+    </div>
+    <div class="port-worth-grid" id="port-worth-grid"></div>
+  </section>
+
+  <main>
+    <div class="controls">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="tattoo" role="tab" aria-selected="true">Tattoos</button>
+        <button class="tab" data-tab="runegraft" role="tab" aria-selected="false">Runegrafts</button>
+      </div>
+      <div class="search-wrap">
+        <input type="search" id="search" placeholder="Search items…" autocomplete="off">
+      </div>
+      <span class="count-label" id="count-label"></span>
+    </div>
+
+    <div class="table-wrap">
+      <div class="loading" id="status">Loading economy data…</div>
+      <table id="economy-table" hidden>
+        <thead>
+          <tr>
+            <th data-sort="name">Item<span class="sort-arrow"></span></th>
+            <th class="num" data-sort="primaryValue">Price<span class="sort-arrow"></span></th>
+            <th class="num" data-sort="volumePrimaryValue">Volume<span class="sort-arrow"></span></th>
+            <th class="num" data-sort="totalChange">7d Change<span class="sort-arrow"></span></th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    Prices shown in divine (≥1 div) or chaos (&lt;1 div). Rate from league data.
+    Serve locally (<code>npx serve .</code>). After updating JSON, run
+    <code>node scripts/download-images.mjs</code> to fetch new icons.
+  </footer>
+
+  <script>
+    const POE_NINJA = "https://poe.ninja";
+    const IMAGE_BASE = "images";
+    const LEAGUE = "allflame";
+
+    const TAB_CONFIG = {
+      tattoo: {
+        file: "poe.ninja.tattoo.json",
+        label: "Tattoos",
+        poePath: "tattoos",
+        shipmentValue: 100_000,
+      },
+      runegraft: {
+        file: "poe.ninja.runegraft.json",
+        label: "Runegrafts",
+        poePath: "runegrafts",
+        shipmentValue: 400_000,
+      },
+    };
+
+    let datasets = {};
+    let portConfig = null;
+    let activeTab = "tattoo";
+    let sortKey = "primaryValue";
+    let sortDir = -1;
+    let searchQuery = "";
+
+    const currencyIcons = {};
+
+    function formatNum(n, decimals = 2) {
+      if (n == null || Number.isNaN(n)) return "—";
+      if (n >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      if (n >= 100) return n.toFixed(1);
+      if (n >= 10) return n.toFixed(2);
+      return n.toFixed(decimals);
+    }
+
+    function formatChange(n) {
+      if (n == null || Number.isNaN(n)) return { text: "—", cls: "neutral" };
+      const sign = n > 0 ? "+" : "";
+      const cls = n > 0 ? "positive" : n < 0 ? "negative" : "neutral";
+      return { text: `${sign}${n.toFixed(1)}%`, cls };
+    }
+
+    function localImage(imagePath) {
+      return `${IMAGE_BASE}${imagePath}`;
+    }
+
+    function getCurrencyIcon(id) {
+      return currencyIcons[id] ? localImage(currencyIcons[id]) : "";
+    }
+
+    function formatPrice(row) {
+      const chaosIcon = getCurrencyIcon("chaos");
+      const divineIcon = getCurrencyIcon("divine");
+
+      if (row.divineValue != null && row.divineValue >= 1) {
+        return `<span class="currency-val">${formatNum(row.divineValue, 2)}${divineIcon ? `<img src="${divineIcon}" alt="div">` : ""}</span>`;
+      }
+      return `<span class="currency-val">${formatNum(row.primaryValue)}${chaosIcon ? `<img src="${chaosIcon}" alt="c">` : ""}</span>`;
+    }
+
+    function buildRows(data, tabKey) {
+      const itemMap = Object.fromEntries(data.items.map((i) => [i.id, i]));
+      const divineRate = data.core.rates.divine ?? 0;
+
+      return data.lines
+        .map((line) => {
+          const item = itemMap[line.id];
+          if (!item) return null;
+          return {
+            id: line.id,
+            name: item.name,
+            image: item.image,
+            detailsId: item.detailsId,
+            category: item.category,
+            primaryValue: line.primaryValue,
+            divineValue: divineRate > 0 ? line.primaryValue * divineRate : null,
+            volumePrimaryValue: line.volumePrimaryValue,
+            totalChange: line.sparkline?.totalChange ?? null,
+            sparkline: line.sparkline?.data ?? [],
+            poeUrl: `${POE_NINJA}/poe1/economy/${LEAGUE}/${TAB_CONFIG[tabKey].poePath}/item/${item.detailsId}`,
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function renderSparkline(canvas, data) {
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const points = data.filter((v) => v != null);
+      if (points.length < 2) return;
+
+      const min = Math.min(...points);
+      const max = Math.max(...points);
+      const range = max - min || 1;
+      const pad = 2;
+      const innerH = h - pad * 2;
+      const step = w / (points.length - 1);
+
+      const coords = points.map((v, i) => ({
+        x: i * step,
+        y: pad + innerH - ((v - min) / range) * innerH,
+      }));
+
+      const last = points[points.length - 1];
+      const first = points[0];
+      const color = last >= first ? "#5fd068" : "#e05555";
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      coords.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
+      ctx.stroke();
+    }
+
+    function getDatasetCount(key) {
+      return (datasets[key] ?? []).length;
+    }
+
+    function getTotalItemCount() {
+      return Object.keys(TAB_CONFIG).reduce((sum, key) => sum + getDatasetCount(key), 0);
+    }
+
+    function getFilteredRows() {
+      const rows = datasets[activeTab] ?? [];
+      const q = searchQuery.trim().toLowerCase();
+      if (!q) return rows;
+      return rows.filter((r) => r.name.toLowerCase().includes(q));
+    }
+
+    function updateTabLabels() {
+      document.querySelectorAll(".tab").forEach((btn) => {
+        const key = btn.dataset.tab;
+        const label = TAB_CONFIG[key].label;
+        const count = getDatasetCount(key);
+        btn.textContent = `${label} (${count})`;
+      });
+    }
+
+    function sortRows(rows) {
+      return [...rows].sort((a, b) => {
+        let av = a[sortKey];
+        let bv = b[sortKey];
+        if (sortKey === "name") {
+          av = a.name.toLowerCase();
+          bv = b.name.toLowerCase();
+          return sortDir * av.localeCompare(bv);
+        }
+        av = av ?? -Infinity;
+        bv = bv ?? -Infinity;
+        return sortDir * (av - bv);
+      });
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("table-body");
+      const rows = sortRows(getFilteredRows());
+
+      const totalInTab = getDatasetCount(activeTab);
+      const tabLabel = TAB_CONFIG[activeTab].label.toLowerCase();
+      const countLabel = document.getElementById("count-label");
+      if (rows.length === totalInTab) {
+        countLabel.textContent = `${rows.length} ${tabLabel}`;
+      } else {
+        countLabel.textContent = `${rows.length} of ${totalInTab} ${tabLabel}`;
+      }
+
+      tbody.innerHTML = rows
+        .map((row) => {
+          const change = formatChange(row.totalChange);
+          const imgSrc = localImage(row.image);
+
+          return `<tr>
+            <td>
+              <div class="item-cell">
+                <img src="${imgSrc}" alt="" loading="lazy" width="32" height="32">
+                <a class="item-name" href="${row.poeUrl}" target="_blank" rel="noopener">${row.name}</a>
+              </div>
+            </td>
+            <td class="num">${formatPrice(row)}</td>
+            <td class="num">${formatNum(row.volumePrimaryValue, 0)}</td>
+            <td class="num"><span class="change ${change.cls}">${change.text}</span></td>
+            <td><canvas class="sparkline" width="72" height="24" data-sparkline="${encodeURIComponent(JSON.stringify(row.sparkline))}"></canvas></td>
+          </tr>`;
+        })
+        .join("");
+
+      tbody.querySelectorAll(".sparkline").forEach((canvas) => {
+        const data = JSON.parse(decodeURIComponent(canvas.dataset.sparkline));
+        renderSparkline(canvas, data);
+      });
+
+      document.querySelectorAll("th[data-sort]").forEach((th) => {
+        th.classList.toggle("sorted", th.dataset.sort === sortKey);
+        const arrow = th.querySelector(".sort-arrow");
+        arrow.textContent = th.dataset.sort === sortKey ? (sortDir === 1 ? "↑" : "↓") : "";
+      });
+    }
+
+    function averagePrice(rows) {
+      if (!rows.length) return null;
+      const sum = rows.reduce((acc, row) => acc + row.primaryValue, 0);
+      return sum / rows.length;
+    }
+
+    function getPortRows(tabKey, portId) {
+      const rows = datasets[tabKey] ?? [];
+      const itemPorts = portConfig?.[tabKey]?.items ?? {};
+      const anyItems = portConfig?.[tabKey]?.anyItems ?? [];
+
+      return rows.filter(
+        (row) => itemPorts[row.id] === portId || anyItems.includes(row.id)
+      );
+    }
+
+    function chaosPerMillionShipment(avgPrice, shipmentValue) {
+      return (avgPrice / shipmentValue) * 1_000_000;
+    }
+
+    function renderPortWorth() {
+      const panel = document.getElementById("port-worth-panel");
+      const grid = document.getElementById("port-worth-grid");
+      const subtitle = document.getElementById("port-worth-subtitle");
+
+      if (!portConfig) {
+        panel.hidden = true;
+        return;
+      }
+
+      const tabPorts = portConfig[activeTab];
+      const tabLabel = TAB_CONFIG[activeTab].label.toLowerCase();
+      const shipmentValue = tabPorts.shipmentValue;
+      const chaosIcon = getCurrencyIcon("chaos");
+      const region =
+        activeTab === "tattoo"
+          ? "Karui ports (tattoos only)"
+          : "Kalguuran ports (runegrafts only)";
+
+      subtitle.textContent = `${region} — avg ${tabLabel} price (${(shipmentValue / 1000).toLocaleString()}k shipment value)`;
+
+      grid.innerHTML = tabPorts.ports
+        .map((port) => {
+          const portRows = getPortRows(activeTab, port.id);
+          const avgPrice = averagePrice(portRows);
+          const chaosPerM = avgPrice != null ? chaosPerMillionShipment(avgPrice, shipmentValue) : null;
+          const valueHtml =
+            chaosPerM != null
+              ? `<span class="port-value"><strong>${Math.round(chaosPerM)}</strong>${chaosIcon ? `<img src="${chaosIcon}" alt="">` : ""}<span>/ 1M val</span></span>`
+              : `<span class="port-value">—</span>`;
+
+          return `<div class="port-worth-card">
+            <div class="port-name">${port.name}</div>
+            <div class="port-attr">${port.attribute}</div>
+            ${valueHtml}
+            <div class="port-meta">${portRows.length} items in pool</div>
+          </div>`;
+        })
+        .join("");
+
+      panel.hidden = false;
+    }
+
+    function renderMeta(data) {
+      const divineRate = data.core.rates.divine;
+      const chaosPerDivine = divineRate > 0 ? Math.round(1 / divineRate) : null;
+      const bar = document.getElementById("meta-bar");
+
+      const chaosIcon = getCurrencyIcon("chaos");
+      const divineIcon = getCurrencyIcon("divine");
+
+      if (chaosPerDivine) {
+        bar.innerHTML = `<span class="rate-chip">${divineIcon ? `<img src="${divineIcon}" alt="">` : ""} 1 Divine ≈ ${chaosPerDivine.toLocaleString()} ${chaosIcon ? `<img src="${chaosIcon}" alt="">` : "chaos"}</span>`;
+      } else {
+        bar.innerHTML = "";
+      }
+    }
+
+    async function loadData() {
+      const status = document.getElementById("status");
+      const table = document.getElementById("economy-table");
+
+      try {
+        const portRes = await fetch("kingsmarch.ports.json");
+        if (!portRes.ok) throw new Error(`Failed to load kingsmarch.ports.json (${portRes.status})`);
+        portConfig = await portRes.json();
+
+        const entries = await Promise.all(
+          Object.entries(TAB_CONFIG).map(async ([key, cfg]) => {
+            const res = await fetch(cfg.file);
+            if (!res.ok) throw new Error(`Failed to load ${cfg.file} (${res.status})`);
+            const json = await res.json();
+            return [key, json];
+          })
+        );
+
+        for (const [, json] of entries) {
+          for (const item of json.core.items) {
+            currencyIcons[item.id] = item.image;
+          }
+        }
+
+        for (const [key, json] of entries) {
+          datasets[key] = buildRows(json, key);
+        }
+
+        updateTabLabels();
+        renderMeta(entries[0][1]);
+        renderPortWorth();
+        status.hidden = true;
+        table.hidden = false;
+        renderTable();
+      } catch (err) {
+        status.className = "error";
+        status.textContent = err.message.includes("Failed to fetch")
+          ? "Could not load JSON files. Serve this folder locally, e.g. npx serve ."
+          : err.message;
+      }
+    }
+
+    document.querySelectorAll(".tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeTab = btn.dataset.tab;
+        document.querySelectorAll(".tab").forEach((t) => {
+          const active = t.dataset.tab === activeTab;
+          t.classList.toggle("active", active);
+          t.setAttribute("aria-selected", active);
+        });
+        renderTable();
+        renderPortWorth();
+      });
+    });
+
+    document.getElementById("search").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderTable();
+    });
+
+    document.querySelectorAll("th[data-sort]").forEach((th) => {
+      th.addEventListener("click", () => {
+        const key = th.dataset.sort;
+        if (sortKey === key) {
+          sortDir *= -1;
+        } else {
+          sortKey = key;
+          sortDir = key === "name" ? 1 : -1;
+        }
+        renderTable();
+      });
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
