@@ -1,10 +1,14 @@
 name: Update poe.ninja data
 
 on:
+  schedule:
+    # Every hour at minute 7 (UTC) — offset from :00 to reduce GitHub Actions load spikes.
+    - cron: '7 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: update-poe-ninja
@@ -36,13 +40,23 @@ jobs:
             -o poe.ninja.tattoo.json
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add poe.ninja.runegraft.json poe.ninja.tattoo.json
           if git diff --staged --quiet; then
             echo "No changes to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore: update poe.ninja data"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # GITHUB_TOKEN pushes do not trigger other workflows (e.g. deploy-pages on push).
+      - name: Trigger Pages deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "Deploy to GitHub Pages" --ref main
